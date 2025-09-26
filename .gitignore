@@ -1,0 +1,22 @@
+﻿# Node / Vite
+node_modules/
+dist/
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Env
+.env
+.env.*
+
+# Large data (KEEP OUT OF GIT)
+backend/predictor/data/*.csv
+backend/predictor/data/*.parquet
+backend/predictor/data/*.zip
+backend/predictor/data/*.jsonl
+
+# Caches
+.cache/
+.huggingface/
