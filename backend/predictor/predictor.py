@@ -3,6 +3,8 @@ import pandas as pd
 import joblib
 from datetime import datetime
 import os
+import logging
+from urllib.parse import urlsplit, parse_qsl, urlunsplit, urlencode
 
 
 from dotenv import load_dotenv
@@ -11,11 +13,37 @@ from pathlib import Path
 # Load backend/predictor/store.env explicitly (since manage.py is elsewhere)
 load_dotenv((Path(__file__).resolve().parent / "store.env"))
 
+# --- logging (Render will capture stdout) ---
+logger = logging.getLogger("predictor")
+if not logger.handlers:
+    logging.basicConfig(level=logging.INFO)
+
+def _redact_url(url: str) -> str:
+    """Redact sensitive query params like access_key, key, token, api_key."""
+    try:
+        scheme, netloc, path, query, frag = urlsplit(url)
+        q = dict(parse_qsl(query, keep_blank_values=True))
+        for k in list(q.keys()):
+            if k.lower() in {"access_key", "api_key", "key", "token"}:
+                q[k] = "REDACTED"
+        return urlunsplit((scheme, netloc, path, urlencode(q), frag))
+    except Exception:
+        return "<redacted>"
+
+def _redact_params(params: dict) -> dict:
+    if not isinstance(params, dict):
+        return {}
+    red = params.copy()
+    for k in list(red.keys()):
+        if k.lower() in {"access_key", "api_key", "key", "token"}:
+            red[k] = "REDACTED"
+    return red
+
 # Feature switches (dev-friendly)
 ALLOW_FALLBACK = os.getenv("PREDICTOR_ALLOW_FALLBACK") == "1"   # use a dummy flight row if API returns nothing
 SIMULATE       = os.getenv("PREDICTOR_SIMULATE") == "1"         # skip real APIs entirely (always dummy)
 
-print(f"[predictor] SIMULATE={SIMULATE}  ALLOW_FALLBACK={ALLOW_FALLBACK}")
+logger.info("[predictor] SIMULATE=%s ALLOW_FALLBACK=%s", SIMULATE, ALLOW_FALLBACK)
 
 # Read env vars (loaded in settings.py via load_dotenv)
 AVIATIONSTACK_API_KEY = os.getenv("AVIATIONSTACK_API_KEY")
@@ -71,7 +99,8 @@ def get_flight_details(api_key, flight_number, flight_date):
                 r.raise_for_status()
             except requests.HTTPError as e:
                 # Surface the exact reason if free plan rejects something
-                print("[Aviationstack HTTPError]", e, "URL:", r.url, "BODY:", r.text)
+                logger.warning("[Aviationstack HTTPError] %s URL:%s BODY:%s",
+                                e, _redact_url(r.request.url), r.text[:500])
                 continue
 
             data = r.json()
@@ -102,9 +131,11 @@ def get_flight_details(api_key, flight_number, flight_date):
                     "MONTH":        int(flight_date.split("-")[1]),
                 }
             else:
-                print(f"[WARN] No data for params {params}. URL:", r.url, "BODY:", r.text)
+                logger.info("[Aviationstack] No data. params=%s url=%s body=%s",
+                            _redact_params(params), _redact_url(r.request.url), r.text[:500])
         except requests.RequestException as e:
-            print(f"[ERROR] Aviationstack request failed for params {params}: {e}")
+            logger.error("[Aviationstack] request failed params=%s err=%s",
+                        _redact_params(params), e)
 
     if ALLOW_FALLBACK:
         print("[FALLBACK] Using dummy flight data because API returned no matching row.")
@@ -137,11 +168,12 @@ def get_weather_data(api_key, city_name, date):
         try:
             response.raise_for_status()
         except requests.HTTPError as e:
-            print("[Weatherstack HTTPError]", e, "URL:", response.url, "BODY:", response.text)
+            logger.warning("[Weatherstack HTTPError] %s URL:%s BODY:%s",
+                            e, _redact_url(response.request.url), response.text[:500])
             return default_weather()
         data = response.json()
     except requests.RequestException as e:
-        print(f"[ERROR] WeatherStack API request failed: {e}")
+        logger.error("[Weatherstack] request failed err=%s", e)
         return default_weather()
 
     cur = data.get("current") or {}
@@ -156,7 +188,7 @@ def get_weather_data(api_key, city_name, date):
             "HEAVY_WIND": 1 if (cur.get("wind_speed") or 0) > 25 else 0,
         }
     except Exception as e:
-        print(f"[ERROR] Failed to parse Weatherstack current data: {e}")
+        logger.error("[Weatherstack] parse error: %s", e)
         return default_weather()
     
 def default_weather():

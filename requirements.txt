@@ -1,9 +1,9 @@
 Django==5.2.6
 gunicorn
-django-cors-headers
-python-dotenv
-requests
-pandas
-scikit-learn==1.7.2
-xgboost
-joblib
+django-cors-headers==4.9.0
+python-dotenv==1.1.1
+requests==2.32.5
+pandas==2.3.2
+scikit-learn==1.7.0
+xgboost==3.0.5
+joblib==1.5.2
