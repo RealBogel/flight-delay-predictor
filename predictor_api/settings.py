@@ -31,13 +31,16 @@ DEBUG = os.getenv("DEBUG", "True") == "True"
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-only-secret-change-me")
 
 ALLOWED_HOSTS = [
-    "localhost", "127.0.0.1",
-    "https://flight-delay-predictor-ne4w.onrender.com",   # <- put your Render (or other) URL here
-    "api.yourdomain.com",      # <- if you add a custom domain later
+    "flight-delay-predictor-ne4w.onrender.com",
+    "localhost",
+    "127.0.0.1",
+    # Maybe add custom domain here later
 ]
 
-
-# Application definition
+CSRF_TRUSTED_ORIGINS = [
+    "https://flight-delay-predictor-ne4w.onrender.com",
+    "https://realbogel.github.io",
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -135,5 +138,10 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    "https://realbogel.github.io/flight-delay-predictor/",  # if using GitHub Pages   
+    "https://realbogel.github.io",  # GitHub Pages origin
+    "http://localhost:5173",        # Vite dev server 
 ]
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
