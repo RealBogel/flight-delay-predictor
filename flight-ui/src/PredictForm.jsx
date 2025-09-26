@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+
 // A tiny semicircle gauge for probability [0..1]
 function Gauge({ value }) {
   const p = Math.max(0, Math.min(1, Number(value || 0)));
@@ -49,7 +51,7 @@ export default function PredictForm() {
     setResult(null);
     try {
       // Call your Django API
-      const res = await fetch("http://127.0.0.1:8000/api/predict/", {
+      const res = await fetch(`${API_URL}/api/predict/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ flight_number: flightNumber, flight_date: flightDate }),
