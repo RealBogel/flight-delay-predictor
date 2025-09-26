@@ -1,22 +1,50 @@
-﻿# Node / Vite
+﻿# -------------------------
+# Node / React (Vite frontend)
+# -------------------------
 node_modules/
 dist/
+build/
+*.log
 
-# Python
+# Vite local env files
+flight-ui/.env
+flight-ui/.env.*
+
+# -------------------------
+# Python (backend)
+# -------------------------
 __pycache__/
 *.pyc
-.ipynb_checkpoints/
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+*.sqlite3
 
-# Env
+# Virtual environments
 .env
-.env.*
+.env.*/
+venv/
+.venv/
 
-# Large data (KEEP OUT OF GIT)
+# -------------------------
+# Jupyter
+# -------------------------
+.ipynb_checkpoints/
+*.ipynb
+
+# -------------------------
+# Large datasets (keep out of GitHub!)
+# -------------------------
 backend/predictor/data/*.csv
 backend/predictor/data/*.parquet
 backend/predictor/data/*.zip
 backend/predictor/data/*.jsonl
 
-# Caches
-.cache/
-.huggingface/
+# -------------------------
+# OS / Editors
+# -------------------------
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
