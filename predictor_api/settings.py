@@ -20,23 +20,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Make 'backend' importable everywhere (so you don't need sys.path hacks in views)
 sys.path.insert(0, str(BASE_DIR / "backend"))
 
-# Load a project-root .env if you ever add one
 load_dotenv(BASE_DIR / ".env")
-
-# Load your current env file in backend/
 load_dotenv(BASE_DIR / "backend" / "store.env")
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-l-d4%(6q%owb0yfklv6n=9@=f&e4o(r1bu2(scbj5=l&f&ab)z'
+DEBUG = os.getenv("DEBUG", "True") == "True"
+SECRET_KEY = os.getenv("SECRET_KEY", "dev-only-secret-change-me")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "localhost", "127.0.0.1",
+    "https://flight-delay-predictor-ne4w.onrender.com",   # <- put your Render (or other) URL here
+    "api.yourdomain.com",      # <- if you add a custom domain later
+]
 
 
 # Application definition
@@ -128,11 +126,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "https://realbogel.github.io/flight-delay-predictor/",  # if using GitHub Pages   
+]
