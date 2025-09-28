@@ -23,5 +23,5 @@ This project demonstrates end-to-end ML model deployment, including data preproc
 
 These datasets were cleaned, merged, and engineered into features (time of day, weather conditions, airport codes, etc.) to train an XGBoost model for binary classification (Delayed vs. On time).
 
-##⚠️ Note on usage:
+## Note on usage⚠️:
 The backend is deployed on Render’s free tier, which “sleeps” after inactivity. The first request may take 10–20 seconds to wake the server.
