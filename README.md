@@ -1,4 +1,4 @@
-#Flight Delay Predictor
+#F light Delay Predictor
 Flight Delay Predictor is a full-stack web application that predicts the probability of a commercial flight being delayed.
 - Frontend: React + Vite with a custom gauge visualization and responsive UI.
 - Backend: Django REST API served on Render.
@@ -13,7 +13,7 @@ Flight Delay Predictor is a full-stack web application that predicts the probabi
 
 This project demonstrates end-to-end ML model deployment, including data preprocessing, model training, API integration, backend serving, and frontend visualization.
 
-##Datasets used:
+## Datasets used:
 
 - Flight Delay and Cancellation Dataset (2019–2023)
 
