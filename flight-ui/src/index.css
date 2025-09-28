@@ -78,3 +78,40 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 56px;
+  background: #0b1220;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  z-index: 1000;
+}
+
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 100%;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand-link { font-weight: 700; color: #e5e7eb; }
+.links a { margin-left: 16px; color: #cbd5e1; }
+.links a:hover { color: #fff; }
+.links a.active { color: #fff; text-decoration: underline; text-underline-offset: 4px; }
+
+.page { padding-top: 80px; } 
+
+/* Airplane gif */
+.plane-wrap { display: flex; justify-content: center; margin: 8px 0 20px; }
+.plane { display: block; margin: 0 auto; max-width: 220px; width: 45vw; height: auto; transform: translateX(15px);}
+
+.predict-page {
+  background: url('/yourname.jpg') no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  width: 100%;
+  padding-top: 80px; /* so nav doesn't overlap */
+}
