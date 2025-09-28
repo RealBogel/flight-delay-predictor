@@ -30,16 +30,15 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background: #111827;              /* matches your dark theme */
+  background: #0f172a;              /* matches your dark theme */
   color: rgba(255, 255, 255, 0.87);
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Quicksand', sans-serif;
 }
 
 #root {
+  min-height: 100%;
   display: flex;
-  align-items: center;               /* vertical center */
-  justify-content: center;           /* horizontal center */
-  padding: 16px;                     /* small breathing room on mobile */
+  flex-direction: column;
 }
 
 h1 {
@@ -83,9 +82,10 @@ button:focus-visible {
   position: fixed;
   top: 0; left: 0; right: 0;
   height: 56px;
-  background: #0b1220;
+  background: #1b0e3b;
   border-bottom: 1px solid rgba(255,255,255,0.08);
   z-index: 1000;
+  font-family:'Poppins', sans-serif;
 }
 
 .nav-inner {
@@ -97,7 +97,7 @@ button:focus-visible {
   align-items: center;
   justify-content: space-between;
 }
-.brand-link { font-weight: 700; color: #e5e7eb; }
+.brand-link { font-weight: 700; color: #e5e7eb; font-size: 1.25rem; }
 .links a { margin-left: 16px; color: #cbd5e1; }
 .links a:hover { color: #fff; }
 .links a.active { color: #fff; text-decoration: underline; text-underline-offset: 4px; }

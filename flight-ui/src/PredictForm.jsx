@@ -79,8 +79,7 @@ export default function PredictForm() {
             maxWidth: 520,
             width: "100%",
             padding: 16,
-            background: "#1f2937",
-            borderRadius: 12,
+            background: "#1b0e3b",
             color: "white",
             boxShadow: "0 10px 20px rgba(0,0,0,0.25)",
           }}
@@ -129,7 +128,7 @@ export default function PredictForm() {
               disabled={loading}
               style={{
                 padding: "10px 14px",
-                background: "#111827",
+                background: "#0b0617",
                 color: "white",
                 borderRadius: 8,
                 border: "none",
